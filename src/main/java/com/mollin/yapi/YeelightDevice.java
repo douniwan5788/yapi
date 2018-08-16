@@ -6,10 +6,10 @@ import com.mollin.yapi.enumeration.YeelightAdjustProperty;
 import com.mollin.yapi.enumeration.YeelightEffect;
 import com.mollin.yapi.enumeration.YeelightProperty;
 import com.mollin.yapi.exception.YeelightResultErrorException;
+import com.mollin.yapi.exception.YeelightSocketException;
 import com.mollin.yapi.flow.YeelightFlow;
 import com.mollin.yapi.result.YeelightResultError;
 import com.mollin.yapi.result.YeelightResultOk;
-import com.mollin.yapi.exception.YeelightSocketException;
 import com.mollin.yapi.socket.YeelightSocketHolder;
 
 import java.util.HashMap;
@@ -37,6 +37,12 @@ public class YeelightDevice {
      */
     private int duration;
 
+    private HashMap<String, String> info;
+
+    public String getInfo(String key) {
+        return info == null ? "" : info.getOrDefault(key, "");
+    }
+
     /**
      * Constructor for Yeelight device
      * @param ip Yeelight device IP
@@ -45,10 +51,22 @@ public class YeelightDevice {
      * @param duration Device effect duration setting for commands
      * @throws YeelightSocketException when a socket error occurs
      */
-    public YeelightDevice(String ip, int port, YeelightEffect effect, int duration) throws YeelightSocketException {
+    public YeelightDevice(String ip, int port, YeelightEffect effect, int duration, HashMap<String, String> info) throws YeelightSocketException {
         this.socketHolder = new YeelightSocketHolder(ip, port);
         this.setEffect(effect);
         this.setDuration(duration);
+        this.info = info;
+    }
+
+    /**
+     * Constructor for Yeelight device. Initial effect set to 'sudden'
+     * @param ip Yeelight device IP
+     * @param port Yeelight device port
+     * @param info Yeelight device info
+     * @throws YeelightSocketException when a socket error occurs
+     */
+    public YeelightDevice(String ip, int port, HashMap<String, String> info) throws YeelightSocketException {
+        this(ip, port, YeelightEffect.SUDDEN, 0, info);
     }
 
     /**
@@ -58,7 +76,7 @@ public class YeelightDevice {
      * @throws YeelightSocketException when a socket error occurs
      */
     public YeelightDevice(String ip, int port) throws YeelightSocketException {
-        this(ip, port, YeelightEffect.SUDDEN, 0);
+        this(ip, port, YeelightEffect.SUDDEN, 0, null);
     }
 
     /**
