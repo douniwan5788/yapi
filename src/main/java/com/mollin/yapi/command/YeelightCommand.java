@@ -28,7 +28,7 @@ public class YeelightCommand {
      * Generate ID for a command
      * @return An unique ID for a command
      */
-    private static int generateId() {
+    private static synchronized int generateId() {
         return ID_GENERATOR++;
     }
 

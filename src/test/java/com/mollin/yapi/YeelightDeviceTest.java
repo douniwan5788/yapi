@@ -52,7 +52,7 @@ public class YeelightDeviceTest {
         // mock socketHolder constructor to do nothing
         PowerMockito.whenNew(YeelightSocketHolder.class).withAnyArguments().then(i -> null);
         // create and spy the device
-        YeelightDevice device = PowerMockito.spy(new YeelightDevice("", 0, effect, duration));
+        YeelightDevice device = PowerMockito.spy(new YeelightDevice("", 0, effect, duration,null));
         // mock device.sendCommand to return empty result
         PowerMockito.doReturn(new String[]{}).when(device, sendCommandMethodName, Mockito.any());
         // check sent command when 'sendCommand' is called
